@@ -1,0 +1,24 @@
+{
+  "name": "llm_integration",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "foundation-t1": "ts-node ./src/foundation/task-1.ts",
+    "foundation-t2": "ts-node ./src/foundation/task-2.ts",
+    "foundation-t3": "ts-node ./src/foundation/task-3.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "openai": "^6.34.0"
+  }
+}
