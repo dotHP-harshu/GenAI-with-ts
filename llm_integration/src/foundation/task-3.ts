@@ -11,13 +11,13 @@ const client = new OpenAI({
 });
 
 interface Message {
-  role: "user" | "assistant";
+  role: "user" | "system";
   content: string;
 }
 
 let messages: Array<Message> = [
   {
-    role: "assistant",
+    role: "system",
     content: "You are a helpful assistant.",
   },
 ];
@@ -33,6 +33,10 @@ const askQuestion = async (ques: string): Promise<string> => {
     const res = await client.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages,
+    });
+    messages.push({
+      role: "system",
+      content: res.choices[0].message.content ?? "",
     });
     return res.choices[0].message.content ?? "";
   } catch (error) {
@@ -50,8 +54,29 @@ const main = async () => {
     const ques = await rl.question("User:> ");
 
     if (ques.startsWith("/clear")) {
-      messages = [];
+      messages = [
+        {
+          role: "system",
+          content: "You are a helpful assistant.",
+        },
+      ];
       console.log("Memory deleted.");
+      continue;
+    }
+
+    if (ques.startsWith("/history")) {
+      console.log("================ History starts =================");
+      console.log(
+        messages
+          .map(
+            (mes) =>
+              `${mes.role === "system" ? "Ai" : mes.role}> ${mes.content}`,
+          )
+          .join(
+            "\n----------------------------------------------------------------------------------------------------\n",
+          ),
+      );
+      console.log("================ History ends =================");
       continue;
     }
 

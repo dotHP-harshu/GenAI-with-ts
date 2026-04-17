@@ -19,7 +19,7 @@ const askQuestion = async (ques: string): Promise<string> => {
     Return only the code, nothing else.
     
     User asked:
-    ${ques}
+    ${ques.replace("/code", "").trim()}
     `;
   }
 
@@ -29,7 +29,7 @@ const askQuestion = async (ques: string): Promise<string> => {
     Return only the explanation, nothing else.
     
     User asked:
-    ${ques}
+    ${ques.replace("/explain", "").trim()}
     `;
   }
 
@@ -38,7 +38,7 @@ const askQuestion = async (ques: string): Promise<string> => {
       model: "llama-3.3-70b-versatile",
       messages: [
         {
-          role: "assistant",
+          role: "system",
           content:
             "You are a friendly ai assistant, who give the satisfactory answers to user.",
         },

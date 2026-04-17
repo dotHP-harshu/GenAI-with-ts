@@ -28,7 +28,7 @@ const askQuestion = async (ques: string): Promise<string> => {
       model: "llama-3.3-70b-versatile",
       messages: [
         {
-          role: "assistant",
+          role: "system",
           content: systemPrompts[currentSystem],
         },
         {
