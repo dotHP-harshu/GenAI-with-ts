@@ -327,3 +327,389 @@ Instead ask:
 - What if JSON breaks?
 
 ---
+
+---
+
+# 🧠 LEVEL 2: Control the Model (DETAILED)
+
+We’ll go task by task like before — but this time focus on **behavior + experimentation**
+
+---
+
+# ✅ Task 4: Temperature Playground
+
+---
+
+## 🎯 What you are building:
+
+A CLI where you can **control randomness of AI**
+
+---
+
+## 🧠 Core Concept: Temperature
+
+Think of temperature like:
+
+| Value | Behavior         |
+| ----- | ---------------- |
+| 0     | Robotic, factual |
+| 0.3   | Focused          |
+| 0.7   | Balanced         |
+| 1     | Creative         |
+| 1.5+  | Chaotic          |
+
+---
+
+## 🛠 What you need to build:
+
+### Step 1: Ask 2 inputs
+
+```bash
+Enter prompt:
+Enter temperature:
+```
+
+---
+
+### Step 2: Pass temperature to API
+
+```ts
+client.chat.completions.create({
+  model: "...",
+  messages: [...],
+  temperature: temp
+});
+```
+
+---
+
+### Step 3: Print output
+
+---
+
+## 🔥 REAL PRACTICE (IMPORTANT)
+
+Don’t just run once.
+
+Test SAME prompt:
+
+```bash
+Explain recursion
+```
+
+Run with:
+
+- 0
+- 0.5
+- 1
+
+---
+
+## 🧠 What you should observe:
+
+- At `0` → short, direct
+- At `1` → longer, creative, sometimes weird
+
+---
+
+## ⚠️ Mistake to avoid:
+
+Don’t just “see output”
+
+👉 Compare outputs side by side
+
+---
+
+## 💡 Upgrade (DO THIS)
+
+Add:
+
+```bash
+/run 3
+```
+
+👉 Run same prompt 3 times → compare randomness
+
+---
+
+---
+
+# ✅ Task 5: Output Length + Stop Control
+
+---
+
+## 🎯 What you are building:
+
+Control **how much AI talks** and **when it stops**
+
+---
+
+## 🧠 Concepts:
+
+### 1. max_tokens
+
+Limits output size
+
+```ts
+max_tokens: 50;
+```
+
+---
+
+### 2. stop sequences
+
+Tell model:
+
+> “Stop when you see this”
+
+```ts
+stop: ["END"];
+```
+
+---
+
+## 🛠 What you need to build:
+
+### Step 1: Extend CLI
+
+```bash
+Enter prompt:
+Max tokens:
+Stop word:
+```
+
+---
+
+### Step 2: Pass params
+
+```ts
+client.chat.completions.create({
+  model: "...",
+  messages: [...],
+  max_tokens: max,
+  stop: [stopWord]
+});
+```
+
+---
+
+## 🔥 Practice Example
+
+Prompt:
+
+```bash
+Write a story and end with END
+```
+
+---
+
+## 🧠 What you should observe:
+
+- Output cuts at stop word
+- Output length changes with max_tokens
+
+---
+
+## ⚠️ Important Insight:
+
+Even if:
+
+> max_tokens = 100
+
+AI might stop early.
+
+Why?
+
+👉 Because it thinks it's “complete”
+
+---
+
+## 💡 Upgrade
+
+Force structure:
+
+```txt
+Write 5 points:
+1.
+2.
+3.
+4.
+5.
+END
+```
+
+---
+
+---
+
+# ✅ Task 6: Prompt Experiment Lab (MOST IMPORTANT)
+
+---
+
+## 🎯 What you are building:
+
+A system to compare **different prompting styles**
+
+---
+
+## 🧠 Core Idea:
+
+Same question → Different prompt → Different output
+
+---
+
+## 🛠 What you need to build:
+
+### Step 1: Hardcode 3 prompt styles
+
+---
+
+### 🔹 1. Normal
+
+```ts
+"Explain closures in JavaScript";
+```
+
+---
+
+### 🔹 2. Few-shot
+
+```ts
+Explain like this:
+
+Example:
+Q: What is variable?
+A: A variable stores data.
+
+Now:
+Q: What is closure?
+A:
+```
+
+---
+
+### 🔹 3. Chain of Thought
+
+```ts
+Explain step by step:
+1. Define closure
+2. Give example
+3. Explain use case
+```
+
+---
+
+### Step 2: Run all 3 automatically
+
+---
+
+### Step 3: Print output like:
+
+```bash
+--- Normal ---
+...
+
+--- Few-shot ---
+...
+
+--- CoT ---
+...
+```
+
+---
+
+## 🧠 What you should observe:
+
+- Few-shot → structured consistency
+- CoT → deeper explanation
+- Normal → random style
+
+---
+
+## ⚠️ Important:
+
+Don’t just read — analyze:
+
+Ask yourself:
+
+- Which is best?
+- Which is most consistent?
+- Which is best for apps?
+
+---
+
+## 💡 Upgrade (VERY IMPORTANT)
+
+Add:
+
+```bash
+/compare "your question"
+```
+
+👉 Run all 3 styles automatically
+
+---
+
+---
+
+# 🧠 HOW LEVEL 2 CONNECTS
+
+| Task   | What you gain           |
+| ------ | ----------------------- |
+| Task 4 | Control randomness      |
+| Task 5 | Control size & stopping |
+| Task 6 | Control thinking style  |
+
+---
+
+# ⚡ REAL POWER INSIGHT
+
+After Level 2, you’ll realize:
+
+> AI is NOT magic
+> It’s a **configurable system**
+
+---
+
+# 🚫 Common Mistakes
+
+### ❌ Mistake 1:
+
+Ignoring parameters
+👉 Most devs never touch them
+
+---
+
+### ❌ Mistake 2:
+
+Testing once
+👉 You must experiment repeatedly
+
+---
+
+### ❌ Mistake 3:
+
+Thinking prompts are fixed
+👉 Prompts = design tool
+
+---
+
+# 🧪 Final Challenge (IMPORTANT)
+
+Build:
+
+```bash
+ai lab
+```
+
+Features:
+
+- input prompt
+- choose:
+  - temperature
+  - max_tokens
+
+- run:
+  - normal
+  - few-shot
+  - CoT

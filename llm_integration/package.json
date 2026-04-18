@@ -5,20 +5,27 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "foundation-t1": "ts-node ./src/foundation/task-1.ts",
-    "foundation-t2": "ts-node ./src/foundation/task-2.ts",
-    "foundation-t3": "ts-node ./src/foundation/task-3.ts"
+    "task-1": "ts-node ./src/foundation/task-1.ts",
+    "task-2": "ts-node ./src/foundation/task-2.ts",
+    "task-3": "ts-node ./src/foundation/task-3.ts",
+    "task-4": "ts-node ./src/control_the_model/task-4.ts",
+    "task-7": "ts-node ./src/structured_output/task-7.ts",
+    "task-8": "ts-node ./src/structured_output/task-8.ts",
+    "task-9": "ts-node ./src/structured_output/task-9.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
+    "express": "^5.2.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
-    "openai": "^6.34.0"
+    "openai": "^6.34.0",
+    "zod": "^4.3.6"
   }
 }
