@@ -62,7 +62,14 @@ export const generate = async (query: string, sessionId: string) => {
     role: "user",
     content: query,
   });
+  const MAX_TRIES = 10;
+  let currentTry = 0;
+
   while (true) {
+    if (currentTry >= MAX_TRIES) {
+      return "The agent has tried max attempts.";
+    }
+    currentTry++;
     const res = await client.responses.create({
       model: "openai/gpt-oss-20b",
       input: messages,

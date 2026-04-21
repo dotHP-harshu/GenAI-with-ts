@@ -3,6 +3,14 @@ import AssistantMessage from "./components/AssistantMessage";
 import UserMessage from "./components/UserMessage";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * Make a sessions history system like chat histoy
+ * 1. make a route in server that returns the sessions
+ * 2. make a component to show the list of sessions
+ * 3. store the sessions with id and name(to show on frontend). (initially give the new chat then after one message change it)
+ * 4. separate the chats sections to dynamically switch between differents chats.
+ */
+
 function App() {
   const [sessionId, setSessionId] = useState(() => uuidv4());
   const [userInput, setUserInput] = useState("");
