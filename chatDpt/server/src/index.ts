@@ -19,10 +19,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/message", async (req: Request, res: Response) => {
-  const { message } = req.body;
+  const { message, sessionId } = req.body;
   if (!message) return res.status(400).json({ message: "message not found." });
 
-  const aiRes = await generate(message);
+  const aiRes = await generate(message, sessionId);
 
   return res.status(200).json({ message: aiRes });
 });

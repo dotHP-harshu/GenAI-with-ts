@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { searchFunction, searchTool } from "./tools.js";
+import NodeCache from "node-cache";
 
 import { config } from "dotenv";
 config({ path: "./.env" });
@@ -9,23 +10,25 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const message: any[] = [
+const myCache = new NodeCache({ stdTTL: 60 * 60 * 60 });
+
+const defaultMessage = [
   {
     role: "system",
     content: `
               You are a highly capable AI assistant.
-                
+
               ## Core Behavior
               - Respond in clear, concise, and natural English.
               - Be helpful, accurate, and practical.
               - Prefer direct answers over long explanations unless the user asks for detail.
               - If the question is ambiguous, ask a clarifying question.
-                
+
               ## Reasoning
               - Think carefully before answering.
               - Break complex problems into steps internally, but do NOT expose full chain-of-thought unless explicitly asked.
               - Provide summaries instead of raw reasoning.
-                
+
               ## Tool Usage
               - Use available tools ONLY when they improve the answer.
               - Use the search tool when:
@@ -38,41 +41,44 @@ const message: any[] = [
               - After receiving tool results:
                 - Interpret and summarize them clearly
                 - Do NOT just dump raw tool output
-                
+
               ## Error Handling
               - If a tool fails, explain the issue and try to recover.
               - If you don’t know something, say so honestly instead of guessing.
-                
+
               ## Output Style
               - Use structured formatting when helpful (bullets, steps, etc.)
               - Avoid unnecessary verbosity
               - Keep responses readable and well-organized
-                
+
               ## Goal
               Help the user efficiently solve their problem with accurate and useful information.
                   `,
   },
 ];
-export const generate = async (query: string) => {
-  message.push({
+export const generate = async (query: string, sessionId: string) => {
+  const messages = (myCache.get(sessionId) as any[]) ?? defaultMessage;
+  messages.push({
     role: "user",
     content: query,
   });
   while (true) {
     const res = await client.responses.create({
       model: "openai/gpt-oss-20b",
-      input: message,
+      input: messages,
       tools: [searchTool],
     });
     const tools = res.output.filter((out) => out.type === "function_call");
 
     if (tools.length === 0 && res.output_text) {
+      // save the messages in the cache
+      myCache.set(sessionId, messages);
       return res.output_text;
     }
 
     if (tools.length > 0) {
       for (const tool of tools) {
-        message.push({
+        messages.push({
           type: "function_call",
           call_id: tool.call_id,
           name: tool.name,
@@ -80,7 +86,7 @@ export const generate = async (query: string) => {
         console.log("# calling tool", tool.name);
         if (tool.name === "searchFunction") {
           const result = await searchFunction(JSON.parse(tool.arguments));
-          message.push({
+          messages.push({
             type: "function_call_output",
             output: JSON.stringify(result),
             call_id: tool.call_id,

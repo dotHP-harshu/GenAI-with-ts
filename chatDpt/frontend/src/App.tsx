@@ -1,8 +1,10 @@
 import { useState } from "react";
 import AssistantMessage from "./components/AssistantMessage";
 import UserMessage from "./components/UserMessage";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
+  const [sessionId, setSessionId] = useState(() => uuidv4());
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState<{ role: string; message: string }[]>(
     [],
@@ -18,7 +20,7 @@ function App() {
 
     const res = await fetch("http://localhost:3000/message", {
       method: "POST",
-      body: JSON.stringify({ message: userInput }),
+      body: JSON.stringify({ message: userInput, sessionId }),
       headers: {
         "content-type": "application/json",
       },
@@ -39,7 +41,7 @@ function App() {
       {/* wrapper  */}
       <div className="w-full">
         {/* Messages container */}
-        <div className="max-w-4xl h-[80dvh] w-full mx-auto p-6">
+        <div className="max-w-4xl h-[60dvh] w-full mx-auto p-6 overflow-y-auto">
           {messages.length > 0 &&
             messages.map((mes, index) => {
               const key = `${mes.role}_${index}`;
