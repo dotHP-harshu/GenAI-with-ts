@@ -4,7 +4,7 @@ import {
   recursiveChunk,
   semanticeChunking,
 } from "./chunking.ts";
-import { client, hfClient, makeEmbeddings } from "./client.ts";
+import { client, hfClient } from "./client.ts";
 
 const chunks = recursiveChunk(document);
 
