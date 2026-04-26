@@ -7,6 +7,8 @@
   "scripts": {
     "task-13": "ts-node ./src/task-13.ts",
     "task-14": "ts-node ./src/task-14.ts",
+    "task-15": "ts-node ./src/task-15.ts",
+    "dev": "ts-node ./src/embeddings.ts",
     "task-cl": "ts-node ./src/client.ts"
   },
   "keywords": [],
@@ -23,8 +25,10 @@
     "@langchain/community": "^1.1.27",
     "@langchain/core": "^1.1.41",
     "@langchain/textsplitters": "^1.0.1",
+    "@types/express": "^5.0.6",
     "chromadb": "^3.4.3",
     "dotenv": "^16.6.1",
+    "express": "^5.2.1",
     "openai": "^4.104.0",
     "pdf-parse": "^1.1.4",
     "zod": "^3.25.76"
